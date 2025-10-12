@@ -12,7 +12,7 @@
     @for (tempProduct of products; track tempProduct.sku) {
       <tr>
         <td class="align-middle">
-          <img [src]="tempProduct.imageUrl" height="50" />
+          <img [src]="tempProduct.imageUrl" height="30" />
         </td>
         <td class="align-middle">{{ tempProduct.name }}</td>
         <td class="align-middle">{{ tempProduct.unitPrice | currency:'BRL' }}</td>
