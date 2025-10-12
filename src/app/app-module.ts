@@ -9,9 +9,11 @@ import { ProductService } from './services/product.service';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductCategoryMenu } from './components/product-category-menu/product-category-menu';
 import { Search } from './components/search/search';
+import { ProductDetails } from './components/product-details/product-details';
 // import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
+  {path: 'products/:id', component: ProductDetails},
   { path: 'search/:keyword', component: ProductList },
   { path: 'category/:id/:name', component: ProductList },
   { path: 'category', component: ProductList },
@@ -24,7 +26,8 @@ const routes: Routes = [
     App,
     ProductList,
     ProductCategoryMenu,
-    Search
+    Search,
+    ProductDetails
   ],
   imports: [
     RouterModule.forRoot(routes),
