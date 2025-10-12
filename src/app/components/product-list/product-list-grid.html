@@ -4,6 +4,7 @@
     <hr>
     <div class="container-fluid">
       <div class="row">
+        <!-- loop over the products -->
         @for (tempProduct of products; track tempProduct.sku) {
           @if (tempProduct?.sku) {
             <div class="col-md-3">
@@ -16,6 +17,14 @@
             </div>
           }
         }
+
+        <!-- if products empty then display a message -->
+        @if (products?.length == 0) {
+          <div class="alert alert-warning col-md-12" role="alert">
+            No products found.
+          </div>
+        }
+
       </div>
     </div>
   </div>
