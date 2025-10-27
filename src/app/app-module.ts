@@ -11,6 +11,7 @@ import { ProductCategoryMenu } from './components/product-category-menu/product-
 import { Search } from './components/search/search';
 import { ProductDetails } from './components/product-details/product-details';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CartStatus } from './components/cart-status/cart-status';
 // import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
@@ -28,7 +29,8 @@ const routes: Routes = [
     ProductList,
     ProductCategoryMenu,
     Search,
-    ProductDetails
+    ProductDetails,
+    CartStatus
   ],
   imports: [
     RouterModule.forRoot(routes),
