@@ -1041,3 +1041,7 @@ footer ul li{
         padding:8px 0
     }
 }
+
+.col{
+  flex: 0 0 0 !important;
+}

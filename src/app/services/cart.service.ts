@@ -52,7 +52,7 @@ export class CartService {
     let totalQuantityValue: number = 0;
 
     for (let currentCartItem of this.cartItems) {
-      totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice;
+      totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice; // calculating total price
       totalQuantityValue += currentCartItem.quantity;
     }
 
@@ -74,4 +74,25 @@ export class CartService {
     console.log('...'); // toFixed(2) == two digits after decimal, ex: 124.98
   }
 
+  decrementQuantity(theCartItem: CartItem) {
+    theCartItem.quantity--; // decrement the quantity
+    if (theCartItem.quantity === 0) {
+      this.remove(theCartItem); // remove item from cart
+    } else {
+      this.computeCartTotals(); // recompute cart total price and total quantity
+    }
+  }
+
+  remove(theCartItem: CartItem) {
+    // get index of item in the array
+    const itemIndex = this.cartItems.findIndex(
+      tempCartItem => tempCartItem.id === theCartItem.id
+    );
+
+    // if found, remove the item from the array at the given index
+    if (itemIndex > -1) {
+      this.cartItems.splice(itemIndex, 1); // remove 1 item at the given index
+      this.computeCartTotals(); // recompute cart total price and total quantity
+    }
+  }
 }
