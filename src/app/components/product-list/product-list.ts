@@ -4,6 +4,7 @@ import { Product } from '../../common/product';
 import { ActivatedRoute } from '@angular/router';
 import { CartItem } from '../../common/cart-item';
 import { CartService } from '../../services/cart.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -24,6 +25,8 @@ export class ProductList {
   theTotalElements: number = 0;
 
   previousKeyword: string = "";
+  // MODERNIZATION: Subject for unsubsribe on destroy
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private productService: ProductService,
@@ -32,9 +35,18 @@ export class ProductList {
   ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(() => {
-      this.listProducts();
-    })
+    // MODERNIZATION: Use takeUntil to automatically unsubscribe
+    this.route.paramMap
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.listProducts();
+      });
+  }
+
+  ngOnDestroy(): void {
+    // MODERNIZATION: Clean up all subscriptions when the component is destroyed
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   listProducts() {
@@ -59,9 +71,10 @@ export class ProductList {
     console.log(`keyword=${theKeyword}, thePageNumber=${this.thePageNumber}`);
 
     // search for the products using keyword
-    this.productService.searchProductListPaginate(this.thePageNumber - 1, this.thePageSize, theKeyword).subscribe(
-      this.processResult()
-    );
+    // Subscribing to the search results
+    this.productService.searchProductListPaginate(this.thePageNumber - 1, this.thePageSize, theKeyword)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(this.processResult());
   }
 
   handleListProducts() {
@@ -103,6 +116,7 @@ export class ProductList {
   processResult() {
     return (data: any) => {
       this.products = data._embedded.products;
+      // API page number is 0-based, UI is 1-based
       this.thePageNumber = data.page.number + 1;
       this.thePageSize = data.page.size;
       this.theTotalElements = data.page.totalElements;

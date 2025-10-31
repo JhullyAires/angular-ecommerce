@@ -4,64 +4,62 @@
     <hr>
     <div class="container-fluid">
       <div class="row">
-        <!-- loop over the products -->
-        @for (tempProduct of products; track tempProduct.sku) {
-          @if (tempProduct?.sku) {
-            <div class="col-md-3">
-              <div class="product-box">
 
-                <a [routerLink]="['/products', tempProduct.id]">
-                  <img [src]="tempProduct.imageUrl" class="img-fluid" alt="{{ tempProduct.name }}" />
-                </a>
+        @for (tempProduct of products; track tempProduct.id) {
+          <div class="col-md-3">
+            <div class="product-box">
 
-                <a [routerLink]="['/products', tempProduct.id]">
-                  <h1>{{ tempProduct.name }}</h1>
-                </a>
+              <a [routerLink]="['/products', tempProduct.id]">
+                <img [src]="tempProduct.imageUrl" class="img-fluid" [alt]="'Image of ' + tempProduct.name" />
+              </a>
 
-                <div class="price">{{ tempProduct.unitPrice | currency:'BRL' }}</div>
-                <button (click)="addToCart(tempProduct)" class="btn btn-primary btn-sm">Add to cart</button>
-              </div>
+              <a [routerLink]="['/products', tempProduct.id]">
+                <h1>{{ tempProduct.name }}</h1>
+              </a>
+
+              <div class="price">{{ tempProduct.unitPrice | currency:'BRL' }}</div>
+              <button (click)="addToCart(tempProduct)" class="btn btn-primary btn-sm">Add to cart</button>
             </div>
-          }
+          </div>
         }
 
-        <!-- if products empty then display a message -->
-        @if (products.length == 0) {
+        @empty {
           <div class="alert alert-warning col-md-12" role="alert">
             No products found.
           </div>
         }
       </div>
 
-        <!-- begin footer -->
+      <div class="footer-pagination mt-4">
+        <div class="row align-items-center">
+          <div class="col-md-6"></div>
 
-        <div class="footer-pagination">
-          <div class="row">
-            <div class="col-md-6"></div>
+          <div class="col-md-6">
+            <div class="row align-items-center">
+              <div class="col-md-9 d-flex justify-content-end">
+                <ngb-pagination
+                  [(page)]="thePageNumber"
+                  [pageSize]="thePageSize"
+                  [collectionSize]="theTotalElements"
+                  [maxSize]="5"
+                  [boundaryLinks]="true"
+                  (pageChange)="listProducts()">
+                </ngb-pagination>
+              </div>
 
-            <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-9" style="padding-left: 30%;">
-                  <ngb-pagination [(page)]="thePageNumber" [pageSize]="thePageSize"
-                    [collectionSize]="theTotalElements" [maxSize]="5" [boundaryLinks]="true" (pageChange)="listProducts()">
-                  </ngb-pagination>
-                </div>
-
-                <div class="col-md-3 mt-2" style="text-align: right;">
-                  <span class="mr-2">Page Size</span>
-                  <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
-                    <option selected="true">5</option>
-                    <option>10</option>
-                    <option>20</option>
-                    <option>30</option>
-                  </select>
-                </div>
+              <div class="col-md-3 text-end">
+                <span class="me-2">Page Size</span>
+                <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
+                  <option [value]="5" [selected]="thePageSize === 5">5</option>
+                  <option [value]="10" [selected]="thePageSize === 10">10</option>
+                  <option [value]="20" [selected]="thePageSize === 20">20</option>
+                  <option [value]="30" [selected]="thePageSize === 30">30</option>
+                </select>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- end footer -->
-    </div>
+      </div>
+      </div>
   </div>
 </div>
