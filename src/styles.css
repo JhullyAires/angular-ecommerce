@@ -565,23 +565,35 @@ input.au-input.au-input-xl{
  * ----------------------------
  */
 
-.form-area{
-    background:#e5e5e5;
-    position:relative;
-    margin-bottom:45px;
-    padding:50px 20px;
-    border:3px solid #ccc
+.form-area {
+  background: #fff;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+  h3 {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+    color: #007bff;
+  }
+
+  label {
+    font-weight: 500;
+    color: #444;
+  }
+
+  .form-control {
+    border-radius: 8px;
+    transition: border-color 0.2s ease;
+    &:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+  }
 }
-.form-area h3{
-    position:absolute;
-    top:-26px;
-    left:13px;
-    background:#e5e5e5;
-    padding:10px 20px;
-    font-weight:500;
-    z-index:23;
-    display:inline-block
-}
+
 .input-space{
     margin-bottom:20px
 }

@@ -60,6 +60,7 @@
                 <p>Total Quantity: {{ totalQuantity }}</p>
                 <p>Shipping: FREE</p>
                 <p class="total-price-final">Total Price: {{ totalPrice | currency: 'BRL' }}</p>
+                <a [routerLink]="['/checkout']" class="btn btn-primary">Checkout</a>
               </td>
             </tr>
           </tfoot>

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ProductService } from '../../services/product.service';
+import { ProductService } from '../../services/product';
 import { Product } from '../../common/product';
 import { ActivatedRoute } from '@angular/router';
 import { CartItem } from '../../common/cart-item';
-import { CartService } from '../../services/cart.service';
+import { CartService } from '../../services/cart';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
