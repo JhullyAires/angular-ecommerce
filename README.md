@@ -16,7 +16,8 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 ### Release 3.00:
 
 - User login / logout security;
-- Track previous orders for logged in users;
+- Provide acess to special VIP page only for authenticated customers;
+- Keep tack of order history for registred customers;
 
 ## Development server
 
