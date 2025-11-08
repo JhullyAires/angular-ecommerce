@@ -7,7 +7,7 @@ import { State } from '../common/state';
 @Injectable({
   providedIn: 'root'
 })
-export class Form {
+export class FormService {
 
   private countriesUrl = 'http://localhost:8080/api/countries';
   private statesUrl = 'http://localhost:8080/api/states';

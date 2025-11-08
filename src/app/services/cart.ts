@@ -9,8 +9,8 @@ export class CartService {
 
   cartItems: CartItem[] = [];
 
-  totalPrice: Subject<number> = new BehaviorSubject<number>(0);
-  totalQuantity: Subject<number> = new BehaviorSubject<number>(0);
+  totalPrice: Subject<number> = new BehaviorSubject<number>(0); // BehaviorSubject é um tipo especial de Subject que precisa de um valor inicial e sempre retem o valor atual para novos assinantes
+  totalQuantity: Subject<number> = new BehaviorSubject<number>(0); // Stores the latest value emitted to its consumers, and whenever a new Observer subscribes, it will immediately receive the "current value" from the BehaviorSubject.
 
   constructor() {}
 
