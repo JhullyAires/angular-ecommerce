@@ -3,69 +3,82 @@
     <div class="container-fluid">
 
       @if (cartItems.length > 0) {
-        <table class="table table-bordered cart-table">
 
-          <thead>
-            <tr>
-              <th scope="col" style="width: 20%;">Product Image</th>
-              <th scope="col" style="width: 50%;">Product Detail</th>
-              <th scope="col" style="width: 30%;"></th>
-            </tr>
-          </thead>
+        <div class="master-container">
+        <div class="card cart">
+          <label class="title">🛒 Seu Carrinho de Compras</label>
+          <div class="products">
 
-          <tbody>
-            @for (item of cartItems; track item.id) {
-              <tr>
-                <td>
-                  <img [src]="item.imageUrl" [alt]="'Imagem do produto ' + item.name" class="img-fluid product-image" width="150">
-                </td>
-                <td>
-                  <p class="product-name">{{ item.name }}</p>
-                  <p class="product-price">Unit Price: {{ item.unitPrice | currency: 'BRL' }}</p>
-                </td>
-                <td>
-                  <div class="quantity-control mb-3">
-                    <label for="quantity-{{item.id}}" class="form-label d-block">Quantity:</label>
-                    <div class="input-group input-group-sm">
-                      <button (click)="decrementQuantity(item)" class="btn btn-outline-secondary" type="button" aria-label="Decrement Quantity Of {{item.name}}">
-                        <i class="fas fa-minus" aria-hidden="true"></i>
-                      </button>
+            @if (cartItems.length > 0) {
+              @for (item of cartItems; track item.id) {
+                <div class="product">
+                  <img [src]="item.imageUrl" [alt]="'Imagem do produto ' + item.name" class="product-image-card">
 
-                      <input type="text" class="form-control text-center" id="quantity-{{item.id}}"
-                             [value]="item.quantity" style="width: 50px;" aria-live="polite"
-                             aria-atomic="true" readonly>
+                  <div class="product-details">
+                    <span>{{ item.name }}</span>
+                    <p>Preço Unitário: **{{ item.unitPrice | currency: 'BRL' }}**</p>
 
-                      <button (click)="incrementQuantity(item)" class="btn btn-outline-secondary" type="button" aria-label="Increment Quantity Of {{item.name}}">
-                        <i class="fas fa-plus" aria-hidden="true"></i>
-                      </button>
-                    </div>
+                    <button class="remove-button" (click)="remove(item)">
+                      <svg viewBox="0 0 448 512" class="svgIcon"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>
+                    </button>
                   </div>
 
-                  <button (click)="remove(item)" class="btn btn-primary btn-sm mt-2" aria-label="Remover {{item.name}} do carrinho">
-                    Remove
-                  </button>
+                  <div class="quantity">
+                    <button (click)="decrementQuantity(item)" aria-label="Diminuir Quantidade">
+                      <svg fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M20 12L4 12"></path>
+                      </svg>
+                    </button>
+                    <label aria-live="polite">{{ item.quantity }}</label>
+                    <button (click)="incrementQuantity(item)" aria-label="Aumentar Quantidade">
+                      <svg fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M12 4V20M20 12H4"></path>
+                      </svg>
+                    </button>
+                  </div>
 
-                  <p class="mt-3 subtotal-value">
-                    Subtotal: {{ item.quantity * item.unitPrice | currency: 'BRL'}}
-                  </p>
-                </td>
-              </tr>
+                  <label class="price small">
+                    {{ item.quantity * item.unitPrice | currency: 'BRL':'symbol':'1.2-2' }}
+                  </label>
+                </div>
+                <hr class="product-separator">
+              }
+            } @else {
+              <div class="alert-empty-cart">
+                🛒 Seu carrinho está vazio.
+              </div>
             }
-          </tbody>
+          </div>
+        </div>
 
-          <tfoot>
-            <tr>
-              <td colspan="2" class="text-end"></td>
-              <td class="cart-summary">
-                <p>Total Quantity: {{ totalQuantity }}</p>
-                <p>Shipping: FREE</p>
-                <p class="total-price-final">Total Price: {{ totalPrice | currency: 'BRL' }}</p>
-                <a [routerLink]="['/checkout']" class="btn btn-primary">Checkout</a>
-              </td>
-            </tr>
-          </tfoot>
+        <!-- <div class="card coupons">
+          <label class="title">🏷️ Aplicar cupons</label>
+          <form class="form">
+              <input type="text" placeholder="Digite seu cupom aqui" class="input_field">
+              <button>Aplicar</button>
+          </form>
+        </div> -->
 
-        </table>
+        <div class="card checkout">
+          <label class="title">🧾 Resumo do Pedido</label>
+          <div class="details">
+            <span>Quantidade Total de Itens:</span>
+            <span>{{ totalQuantity }}</span>
+            <span>Subtotal do Carrinho:</span>
+            <span>{{ totalPrice | currency: 'BRL' }}</span>
+            <!-- <span>Frete:</span>
+            <span>GRÁTIS</span>
+            <span>Desconto por Cupom (simulado):</span>
+            <span>- R$ 0,00</span> -->
+          </div>
+          <div class="checkout--footer">
+            <label class="price total-price-final">
+              Total: {{ totalPrice | currency: 'BRL' }}
+            </label>
+            <button class="checkout-btn" style="margin-left: 50%;" [routerLink]="['/checkout']">Finalizar Compra</button>
+          </div>
+        </div>
+      </div>
 
       } @else {
         <div class="alert alert-warning text-center" role="alert">

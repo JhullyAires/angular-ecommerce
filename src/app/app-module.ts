@@ -16,11 +16,15 @@ import { CartDetails } from './components/cart-details/cart-details';
 import { Checkout } from './components/checkout/checkout';
 import { ReactiveFormsModule } from '@angular/forms';
 // import { HttpClientModule } from '@angular/common/http';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { ToastModule } from 'primeng/toast';
+import { TableModule } from 'primeng/table';
 
 const routes: Routes = [
   {path: 'checkout', component: Checkout},
   {path: 'cart-details', component: CartDetails},
-  {path: 'products/:id', component: ProductDetails},
+  // {path: 'products/:id', component: ProductDetails},
   { path: 'search/:keyword', component: ProductList },
   { path: 'category/:id/:name', component: ProductList },
   { path: 'category', component: ProductList },
@@ -46,6 +50,10 @@ const routes: Routes = [
     NgbModule,
     // HttpClientModule
     ReactiveFormsModule,
+    ButtonModule,
+    TableModule,
+    RippleModule,
+    ToastModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

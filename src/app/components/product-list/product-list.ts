@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CartItem } from '../../common/cart-item';
 import { CartService } from '../../services/cart';
 import { Subject, takeUntil } from 'rxjs';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { ProductDetails } from '../product-details/product-details';
 
 @Component({
   selector: 'app-product-list',
@@ -25,17 +27,16 @@ export class ProductList {
   theTotalElements: number = 0;
 
   previousKeyword: string = "";
-  // MODERNIZATION: Subject for unsubsribe on destroy
   private unsubscribe$ = new Subject<void>();
 
   constructor(
     private productService: ProductService,
-    private cartService: CartService, // injecting the CartService
-    private route: ActivatedRoute
+    private cartService: CartService,
+    private route: ActivatedRoute,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
-    // MODERNIZATION: Use takeUntil to automatically unsubscribe
     this.route.paramMap
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
@@ -44,7 +45,6 @@ export class ProductList {
   }
 
   ngOnDestroy(): void {
-    // MODERNIZATION: Clean up all subscriptions when the component is destroyed
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -71,7 +71,7 @@ export class ProductList {
     console.log(`keyword=${theKeyword}, thePageNumber=${this.thePageNumber}`);
 
     // search for the products using keyword
-    // Subscribing to the search results
+    // subscribing to the search results
     this.productService.searchProductListPaginate(this.thePageNumber - 1, this.thePageSize, theKeyword)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(this.processResult());
@@ -129,4 +129,25 @@ export class ProductList {
     const theCartItem = new CartItem(theProduct);
     this.cartService.addToCart(theCartItem);
   }
+
+  openProductDetails(theProduct: Product) {
+        // 1. Verificar se a classe 'dark' está presente no body
+        const isDarkTheme = document.body.classList.contains('dark');
+
+        // 2. Definir as opções da modal
+        const modalOptions: NgbModalOptions = {
+            size: 'lg',
+            centered: true,
+            // 3. Adicionar a classe 'dark' ao contêiner principal da modal (.modal-dialog)
+            // Se o tema estiver escuro, adicionamos 'dark', senão, passamos uma string vazia.
+            modalDialogClass: isDarkTheme ? 'dark-modal-dialog' : ''
+            // Usaremos 'dark-modal-dialog' para evitar conflitos com a classe 'dark' do seu body
+        };
+
+        // Abre o componente ProductDetails como uma modal
+        const modalRef = this.modalService.open(ProductDetails, modalOptions);
+
+        // Passa o objeto Product para o componente modal
+        modalRef.componentInstance.product = theProduct;
+    }
 }
